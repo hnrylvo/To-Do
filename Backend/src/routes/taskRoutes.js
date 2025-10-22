@@ -41,8 +41,8 @@ const updateTaskValidation = [
   body('title')
     .optional()
     .trim()
-    .isLength({ min: 1, max: 200 })
-    .withMessage('El título debe tener entre 1 y 200 caracteres'),
+    .isLength({ min: 1, max: 100 })
+    .withMessage('El título debe tener entre 1 y 100 caracteres'),
   body('description')
     .optional()
     .trim()

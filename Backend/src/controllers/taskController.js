@@ -1,8 +1,9 @@
 const { validationResult } = require('express-validator');
 const Task = require('../models/Task');
+const AppError = require('../utils/AppError');
 
 // Get all tasks
-const getTasks = async (req, res) => {
+const getTasks = async (req, res, next) => {
   try {
     const tasks = await Task.findByUserId(req.userId);
     const normalized = tasks.map(t => ({
@@ -21,19 +22,17 @@ const getTasks = async (req, res) => {
     res.json({ tasks: normalized });
   } catch (error) {
     console.error('Get tasks error:', error);
-    res.status(500).json({ 
-      error: 'Server error while fetching tasks' 
-    });
+    next(error);
   }
 };
 
 // Get task by ID
-const getTaskById = async (req, res) => {
+const getTaskById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id, req.userId);
     if (!task) {
-      return res.status(404).json({ error: 'Task not found or unauthorized' });
+      return next(new AppError('Task not found or unauthorized', 404, 'NOT_FOUND'));
     }
     const normalized = {
       id: task.id,
@@ -51,18 +50,16 @@ const getTaskById = async (req, res) => {
     res.json({ task: normalized });
   } catch (error) {
     console.error('Get task by ID error:', error);
-    res.status(500).json({ 
-      error: 'Server error while fetching task' 
-    });
+    next(error);
   }
 };
 
 // Create task
-const createTask = async (req, res) => {
+const createTask = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return next({ errors: errors.array() });
     }
 
     const { title, description, priority, category, dueDate } = req.body;
@@ -87,18 +84,16 @@ const createTask = async (req, res) => {
     });
   } catch (error) {
     console.error('Create task error:', error);
-    res.status(500).json({ 
-      error: 'Server error while creating task' 
-    });
+    next(error);
   }
 };
 
 // Update task
-const updateTask = async (req, res) => {
+const updateTask = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return next({ errors: errors.array() });
     }
 
     const { id } = req.params;
@@ -129,16 +124,14 @@ const updateTask = async (req, res) => {
   } catch (error) {
     console.error('Update task error:', error);
     if (error.message === 'Task not found or unauthorized') {
-      return res.status(404).json({ error: error.message });
+      return next(new AppError(error.message, 404, 'NOT_FOUND'));
     }
-    res.status(500).json({ 
-      error: 'Server error while updating task' 
-    });
+    next(error);
   }
 };
 
 // Delete task
-const deleteTask = async (req, res) => {
+const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     await Task.delete(id, req.userId);
@@ -149,11 +142,9 @@ const deleteTask = async (req, res) => {
   } catch (error) {
     console.error('Delete task error:', error);
     if (error.message === 'Task not found or unauthorized') {
-      return res.status(404).json({ error: error.message });
+      return next(new AppError(error.message, 404, 'NOT_FOUND'));
     }
-    res.status(500).json({ 
-      error: 'Server error while deleting task' 
-    });
+    next(error);
   }
 };
 

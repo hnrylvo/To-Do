@@ -24,19 +24,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'To-Do API is running' });
 });
 
-// 404 handler
+// 404 handler (uniform response)
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: true, code: 'NOT_FOUND', message: 'Route not found' });
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    error: 'Something went wrong!',
-    message: err.message 
-  });
-});
+// Centralized error handler
+const handlingError = require('./src/middlewares/handlingError');
+app.use(handlingError);
 
 // Iniciar servidor
 app.listen(PORT, () => {

@@ -1,13 +1,15 @@
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const AppError = require('../utils/AppError');
 
 // Registrar nuevo usuario
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      // Let the handling middleware format validation errors
+      return next({ errors: errors.array() });
     }
 
     const { name, email, password } = req.body;
@@ -15,9 +17,7 @@ const register = async (req, res) => {
     // Verificar si el usuario ya existe
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
-      return res.status(400).json({ 
-        error: 'User with this email already exists' 
-      });
+      return next(new AppError('User with this email already exists', 400, 'USER_EXISTS'));
     }
 
     // Crear nuevo usuario
@@ -41,18 +41,16 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.error('Register error:', error);
-    res.status(500).json({ 
-      error: 'Server error during registration' 
-    });
+    next(error);
   }
 };
 
 // Login user
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return next({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
@@ -60,16 +58,12 @@ const login = async (req, res) => {
     // Find user by email
     const user = await User.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ 
-        error: 'Invalid credentials' 
-      });
+      return next(new AppError('Invalid credentials', 401, 'INVALID_CREDENTIALS'));
     }
 
     const isValidPassword = await User.verifyPassword(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ 
-        error: 'Invalid credentials' 
-      });
+      return next(new AppError('Invalid credentials', 401, 'INVALID_CREDENTIALS'));
     }
 
     // Generar JWT token
@@ -90,9 +84,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ 
-      error: 'Server error during login' 
-    });
+    next(error);
   }
 };
 

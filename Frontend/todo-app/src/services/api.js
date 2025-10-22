@@ -17,8 +17,10 @@ async function request(path, { method = 'GET', body, headers = {}, auth = true }
   if (!res.ok) {
     let message = 'Request failed';
     if (typeof data === 'string') message = data;
-    else if (data?.error) message = data.error;
-    else if (data?.message) message = data.message;
+    // Prefer explicit message field if it's a string
+    else if (typeof data?.message === 'string' && data.message.trim() !== '') message = data.message;
+    // Use error field only if it's a non-empty string (avoid boolean true/false)
+    else if (typeof data?.error === 'string' && data.error.trim() !== '') message = data.error;
     else if (Array.isArray(data?.errors) && data.errors.length) message = data.errors[0]?.msg || message;
     throw new Error(message);
   }
