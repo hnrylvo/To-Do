@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Create database connection
+// Crea la conexion a la db
 const dbPath = path.join(__dirname, '..', '..', 'database.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
@@ -12,9 +12,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Initialize database tables
+// Inicializar tablas
 function initializeDatabase() {
-  // Create Users table
+  // Users
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,7 @@ function initializeDatabase() {
     }
   });
 
-  // Create Tasks table
+  // Tasks
   db.run(`
     CREATE TABLE IF NOT EXISTS tasks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

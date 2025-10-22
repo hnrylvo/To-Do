@@ -4,38 +4,36 @@ const { register, login } = require('../controllers/authController');
 
 const router = express.Router();
 
-// Validation middleware for registration
 const registerValidation = [
   body('name')
     .trim()
     .notEmpty()
-    .withMessage('Name is required')
+    .withMessage('El nombre es requerido')
     .isLength({ min: 2 })
-    .withMessage('Name must be at least 2 characters long'),
+    .withMessage('El nombre debe tener al menos 2 caracteres'),
   body('email')
     .trim()
     .notEmpty()
-    .withMessage('Email is required')
+    .withMessage('El correo electrónico es requerido')
     .isEmail()
-    .withMessage('Please provide a valid email'),
+    .withMessage('Por favor, proporciona un correo electrónico válido'),
   body('password')
     .notEmpty()
-    .withMessage('Password is required')
+    .withMessage('La contraseña es requerida')
     .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long')
+    .withMessage('La contraseña debe tener al menos 6 caracteres')
 ];
 
-// Validation middleware for login
 const loginValidation = [
   body('email')
     .trim()
     .notEmpty()
-    .withMessage('Email is required')
+    .withMessage('El correo electrónico es requerido')
     .isEmail()
-    .withMessage('Please provide a valid email'),
+    .withMessage('Por favor, proporciona un correo electrónico válido'),
   body('password')
     .notEmpty()
-    .withMessage('Password is required')
+    .withMessage('La contraseña es requerida')
 ];
 
 // Routes

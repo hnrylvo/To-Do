@@ -13,6 +13,7 @@ export default function Analytics() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('week');
+  const darkMode = localStorage.getItem('darkMode') ? JSON.parse(localStorage.getItem('darkMode')) : false;
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -54,7 +55,7 @@ export default function Analytics() {
   const pendingTasks = filteredTasks.filter(task => !task.completed);
   const completionRate = filteredTasks.length > 0 ? Math.round((completedTasks.length / filteredTasks.length) * 100) : 0;
 
-  // Priority distribution
+  // Prioridades
   const priorityStats = {
     urgent: filteredTasks.filter(t => t.priority === 'urgent').length,
     high: filteredTasks.filter(t => t.priority === 'high').length,
@@ -62,7 +63,7 @@ export default function Analytics() {
     low: filteredTasks.filter(t => t.priority === 'low').length
   };
 
-  // Category distribution
+  // Categorias
   const categoryStats = {
     work: filteredTasks.filter(t => t.category === 'work').length,
     personal: filteredTasks.filter(t => t.category === 'personal').length,
@@ -72,7 +73,7 @@ export default function Analytics() {
     other: filteredTasks.filter(t => t.category === 'other').length
   };
 
-  // Overdue tasks
+  // Tareas vencidas
   const overdueTasks = filteredTasks.filter(task => 
     task.dueDate && new Date(task.dueDate) < new Date() && !task.completed
   );
@@ -88,11 +89,11 @@ export default function Analytics() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-800">Analytics</h2>
+        <h2 className={`text-3xl font-bold ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Estadisticas</h2>
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-4 py-3 rounded-lg cursor-pointer gradient-to-r bg-gradient-to-r from-blue-600 to-purple-600 text-white focus:outline-none"
         >
           <option value="week">Última semana</option>
           <option value="month">Último mes</option>
@@ -101,7 +102,7 @@ export default function Analytics() {
         </select>
       </div>
 
-      {/* Overview Cards */}
+      {/* Tarjetas de resumen */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
           <div className="flex items-center justify-between">
@@ -153,7 +154,7 @@ export default function Analytics() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Priority Distribution */}
+        {/* Distribucion de prioridades */}
         <div className="bg-white rounded-xl shadow-sm border p-6">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Distribución por Prioridad</h3>
           <div className="space-y-4">
@@ -191,7 +192,7 @@ export default function Analytics() {
           </div>
         </div>
 
-        {/* Category Distribution */}
+        {/* Distribucion de categorias */}
         <div className="bg-white rounded-xl shadow-sm border p-6">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Distribución por Categoría</h3>
           <div className="space-y-4">
@@ -236,7 +237,7 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* Overdue Tasks Alert */}
+      {/* Alerta de tareas vencidas */}
       {overdueTasks.length > 0 && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -291,16 +292,16 @@ export default function Analytics() {
         </div>
       )}
 
-      {/* Productivity Tips */}
+      {/* Consejos de productividad */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-xl p-6 border border-blue-200">
         <h3 className="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
-          Consejos de Productividad
+          Consejos de productividad
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-white rounded-lg p-4 border border-blue-200">
             <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
               <FiTarget className="text-sm" />
-              Enfoque en Prioridades
+              Enfoque en prioridades
             </h4>
             <p className="text-sm text-gray-600">
               {priorityStats.urgent > 0 || priorityStats.high > 0 
@@ -311,11 +312,11 @@ export default function Analytics() {
           <div className="bg-white rounded-lg p-4 border border-blue-200">
             <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
               <FiTrendingUp className="text-sm" />
-              Mejora Continua
+              Mejora continua
             </h4>
             <p className="text-sm text-gray-600">
               {completionRate >= 80 
-                ? '¡Increíble! Tu tasa de finalización es excelente. Mantén este ritmo.'
+                ? '¡Increíble! Tu tasa de completación es excelente. Mantén este ritmo.'
                 : completionRate >= 60 
                 ? 'Buen progreso. Intenta completar más tareas para mejorar tu productividad.'
                 : 'Considera dividir las tareas grandes en tareas más pequeñas y manejables.'}

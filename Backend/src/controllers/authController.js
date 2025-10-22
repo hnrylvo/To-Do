@@ -2,10 +2,9 @@ const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Register a new user
+// Registrar nuevo usuario
 const register = async (req, res) => {
   try {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -13,7 +12,7 @@ const register = async (req, res) => {
 
     const { name, email, password } = req.body;
 
-    // Check if user already exists
+    // Verificar si el usuario ya existe
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
       return res.status(400).json({ 
@@ -21,10 +20,10 @@ const register = async (req, res) => {
       });
     }
 
-    // Create new user
+    // Crear nuevo usuario
     const user = await User.create(name, email, password);
 
-    // Generate JWT token
+    // JWT token
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
@@ -51,7 +50,6 @@ const register = async (req, res) => {
 // Login user
 const login = async (req, res) => {
   try {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -67,7 +65,6 @@ const login = async (req, res) => {
       });
     }
 
-    // Verify password
     const isValidPassword = await User.verifyPassword(password, user.password);
     if (!isValidPassword) {
       return res.status(401).json({ 
@@ -75,7 +72,7 @@ const login = async (req, res) => {
       });
     }
 
-    // Generate JWT token
+    // Generar JWT token
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,

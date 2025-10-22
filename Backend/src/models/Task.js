@@ -1,7 +1,7 @@
 const db = require('../config/database');
 
 class Task {
-  // Create a new task
+  // Create task
   static async create(userId, title, description, priority = 'medium', category = 'other', dueDate = null) {
     return new Promise((resolve, reject) => {
       const sql = 'INSERT INTO tasks (user_id, title, description, priority, category, due_date) VALUES (?, ?, ?, ?, ?, ?)';
@@ -24,7 +24,7 @@ class Task {
     });
   }
 
-  // Get all tasks for a user
+  // Get all tasks
   static async findByUserId(userId) {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC';
@@ -38,7 +38,7 @@ class Task {
     });
   }
 
-  // Get a single task by ID for a specific user
+  // Get task by ID
   static async findById(id, userId) {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT * FROM tasks WHERE id = ? AND user_id = ?';
@@ -52,7 +52,7 @@ class Task {
     });
   }
 
-  // Update a task
+  // Update task
   static async update(id, userId, updates) {
     return new Promise((resolve, reject) => {
       const { title, description, completed, priority, category, dueDate } = updates;
@@ -80,7 +80,7 @@ class Task {
     });
   }
 
-  // Delete a task
+  // Delete task
   static async delete(id, userId) {
     return new Promise((resolve, reject) => {
       const sql = 'DELETE FROM tasks WHERE id = ? AND user_id = ?';

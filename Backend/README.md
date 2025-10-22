@@ -372,11 +372,3 @@ curl -X DELETE http://localhost:3000/api/tasks/1 \
 ### Error de CORS
 - El servidor ya tiene CORS habilitado para todas las solicitudes
 - Si usas un puerto específico en el frontend, puedes configurar CORS en server.js
-
-## 📝 Licencia
-
-ISC
-
-## 👨‍💻 Autor
-
-Henry

@@ -55,7 +55,7 @@ Una aplicación web moderna y completa para la gestión de tareas, construida co
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <repository-url>
+git clone https://github.com/hnrylvo/To-Do.git
 cd To-Do
 ```
 
@@ -164,53 +164,3 @@ La aplicación es completamente instalable como una PWA:
 - **Service Worker** para funcionalidad offline
 - **Iconos adaptativos** para diferentes dispositivos
 - **Soporte completo** para iOS y Android
-
-## 🚀 Despliegue
-
-### Backend (Heroku, Railway, etc.)
-```bash
-# Configurar variables de entorno
-NODE_ENV=production
-PORT=3000
-
-# Instalar dependencias
-npm install --production
-
-# Iniciar servidor
-npm start
-```
-
-### Frontend (Vercel, Netlify, etc.)
-```bash
-# Construir para producción
-npm run build
-
-# Los archivos estáticos estarán en /dist
-```
-
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
-
-## 👨‍💻 Autor
-
-**Henry** - [@tu-github](https://github.com/tu-usuario)
-
-## 🙏 Agradecimientos
-
-- React Team por el excelente framework
-- Tailwind CSS por el sistema de diseño
-- Express.js por el backend robusto
-- SQLite por la base de datos ligera
-
----
-
-**TaskFlow** - Organiza tu vida, una tarea a la vez. 🚀

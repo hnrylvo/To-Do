@@ -109,14 +109,14 @@ export default function TaskFormPage() {
         )}
 
         <form onSubmit={onSubmit} className="space-y-6">
-          {/* Title */}
+          {/* Titulo */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Título <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="¿Qué necesitas hacer?"
@@ -124,13 +124,13 @@ export default function TaskFormPage() {
             />
           </div>
 
-          {/* Description */}
+          {/* Descripción */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Descripción
             </label>
             <textarea
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none"
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -138,14 +138,14 @@ export default function TaskFormPage() {
             />
           </div>
 
-          {/* Priority and Category */}
+          {/* Prioridad y Categoría */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Prioridad
               </label>
               <select
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
               >
@@ -165,7 +165,7 @@ export default function TaskFormPage() {
                 Categoría
               </label>
               <select
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -181,14 +181,14 @@ export default function TaskFormPage() {
             </div>
           </div>
 
-          {/* Due Date */}
+          {/* Fecha de vencimiento */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Fecha de vencimiento
             </label>
             <input
               type="date"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               min={new Date().toISOString().split('T')[0]}
@@ -206,7 +206,7 @@ export default function TaskFormPage() {
             )}
           </div>
 
-          {/* Preview */}
+          {/* Vista previa */}
           {(title || description) && (
             <div className="bg-gray-50 rounded-lg p-4">
               <h4 className="text-sm font-medium text-gray-700 mb-2">Vista previa:</h4>
@@ -266,14 +266,14 @@ export default function TaskFormPage() {
             </div>
           )}
 
-          {/* Actions */}
+          {/* Acciones */}
           <div className="flex gap-4 pt-4">
             <button
               type="button"
               onClick={() => navigate(-1)}
               className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
-              Cancelar
+              Cancelar tarea
             </button>
             <button
               type="submit"
@@ -283,10 +283,10 @@ export default function TaskFormPage() {
               {saving ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Guardando...
+                  Guardando tarea...
                 </span>
               ) : (
-                isEdit ? 'Actualizar Tarea' : 'Crear Tarea'
+                isEdit ? 'Actualizar tarea' : 'Crear tarea'
               )}
             </button>
           </div>

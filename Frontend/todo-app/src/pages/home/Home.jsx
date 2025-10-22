@@ -44,6 +44,7 @@ export default function Home() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('created');
   const navigate = useNavigate();
+  const darkMode = localStorage.getItem('darkMode') ? JSON.parse(localStorage.getItem('darkMode')) : false;
 
   const refresh = async () => {
     setLoading(true); setError(null);
@@ -110,7 +111,6 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      {/* Header with Stats */}
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -126,7 +126,7 @@ export default function Home() {
           </Link>
         </div>
         
-        {/* Stats Cards */}
+        {/* Estadisticas basicas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
             <div className="flex items-center justify-between">
@@ -167,11 +167,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Filters and Search */}
+      {/* Filtros y busqueda */}
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <FiSearch className="text-sm" />
               Buscar
             </label>
@@ -180,18 +180,18 @@ export default function Home() {
               placeholder="Buscar tareas..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <FiFilter className="text-sm" />
               Estado
             </label>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer"
             >
               <option value="all">Todas</option>
               <option value="pending">Pendientes</option>
@@ -203,7 +203,7 @@ export default function Home() {
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer"
             >
               <option value="all">Todas</option>
               <option value="urgent">Urgente</option>
@@ -217,7 +217,7 @@ export default function Home() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer"
             >
               <option value="all">Todas</option>
               <option value="work">Trabajo</option>
@@ -229,14 +229,14 @@ export default function Home() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <FiCalendar className="text-sm" />
               Ordenar por
             </label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer"
             >
               <option value="created">Fecha creación</option>
               <option value="title">Título</option>
@@ -247,14 +247,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Error Message */}
+      {/* Mensaje de error */}
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      {/* Tasks List */}
+      {/* Lista de tareas */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -262,12 +262,12 @@ export default function Home() {
       ) : sortedTasks.length === 0 ? (
         <div className="text-center py-12">
           <MdOutlineTask className="text-6xl mb-4 text-blue-600 mx-auto block text-center" />
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">
+          <h3 className={`text-xl font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-2`}>
             {searchTerm || filterStatus !== 'all' || filterPriority !== 'all' || filterCategory !== 'all' 
               ? 'No se encontraron tareas' 
               : 'No hay tareas aún'}
           </h3>
-          <p className="text-gray-500 mb-6">
+          <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             {searchTerm || filterStatus !== 'all' || filterPriority !== 'all' || filterCategory !== 'all'
               ? 'Intenta ajustar los filtros de búsqueda'
               : 'Crea tu primera tarea para comenzar'}
@@ -293,7 +293,7 @@ export default function Home() {
                         : 'border-gray-300 hover:border-green-400'
                     }`}
                   >
-                    {task.completed && <span className="text-sm">✓</span>}
+                    {task.completed ? <span className="text-sm">✓</span> : null}
                   </button>
                   
                   <div className="flex-1 min-w-0">
@@ -302,13 +302,18 @@ export default function Home() {
                         <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
                           {task.title}
                         </h3>
+                        {task.dueDate && (
+                          <p className={`mt-1 text-sm ${task.completed ? 'text-gray-400' : (new Date(task.dueDate) < new Date() ? 'text-red-600' : 'text-gray-500')}`}>
+                            Vence: {new Date(task.dueDate).toLocaleDateString('es-ES')}
+                          </p>
+                        )}
                         {task.description && (
                           <p className={`mt-2 ${task.completed ? 'line-through text-gray-400' : 'text-gray-600'}`}>
                             {task.description}
                           </p>
                         )}
                         
-                        {/* Tags */}
+                        {/* Etiquetas */}
                         <div className="flex flex-wrap gap-2 mt-3">
                           {task.priority && (
                             <span className={`px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1 ${PRIORITY_COLORS[task.priority] || PRIORITY_COLORS.medium}`}>

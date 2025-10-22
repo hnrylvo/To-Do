@@ -4,7 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./src/routes/authRoutes');
 const taskRoutes = require('./src/routes/taskRoutes');
 
-// Initialize database (creates tables if they don't exist)
+// Inicializar base datos (crea las tablas si no existen)
 require('./src/config/database');
 
 const app = express();
@@ -38,7 +38,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
+// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/api/health`);

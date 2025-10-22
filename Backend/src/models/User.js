@@ -2,7 +2,7 @@ const db = require('../config/database');
 const bcrypt = require('bcryptjs');
 
 class User {
-  // Create a new user
+  // Create user
   static async create(name, email, password) {
     return new Promise(async (resolve, reject) => {
       try {

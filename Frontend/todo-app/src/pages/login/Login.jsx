@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { FiCheck, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 export default function Login() {
   const { login, loading, error } = useAuth();
@@ -10,6 +10,7 @@ export default function Login() {
   const [formError, setFormError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const darkMode = localStorage.getItem('darkMode') ? JSON.parse(localStorage.getItem('darkMode')) : false;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +25,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mb-4">
-            <FiCheck className="text-white text-2xl" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">Bienvenido de vuelta</h2>
-          <p className="mt-2 text-gray-600">Inicia sesión en tu cuenta para continuar</p>
+          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Bienvenido de vuelta</h2>
+          <p className={`mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Inicia sesión en tu cuenta para continuar</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg border p-8">
@@ -43,12 +41,12 @@ export default function Login() {
 
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="text-sm font-medium text-gray-700 mb-2">
                 Correo electrónico
               </label>
               <input
                 type="email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@email.com"
@@ -57,13 +55,13 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="text-sm font-medium text-gray-700 mb-2">
                 Contraseña
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors pr-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg pr-12"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
@@ -102,7 +100,7 @@ export default function Login() {
                 to="/register" 
                 className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
-                Regístrate aquí
+                Regístrate
               </Link>
             </p>
           </div>
